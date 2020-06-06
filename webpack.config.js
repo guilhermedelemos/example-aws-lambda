@@ -1,13 +1,40 @@
-// const path = require('path');
+var path = require("path");
+var fs = require("fs");
 
 module.exports = {
-    // entry: './src/example-dynamo.js',
-    // output: {
-    //     filename: 'index.js',
-    //     path: path.resolve(__dirname, 'dist'),
-    // },
-    entry: {
-        uuid: './src/uuid.js',
-        dynamodb: './src/example-dynamo.js'
-    }
+  entry: fs.readdirSync(path.join(__dirname, "./lambdas"))
+         .filter(filename => /\.js$/.test(filename))
+         .map(filename => {
+           var entry = {};
+           entry[filename.replace(".js", "")] = path.join(
+             __dirname,
+             "./lambdas/",
+             filename
+           );
+           return entry;
+         })
+         .reduce((finalObject, entry) => Object.assign(finalObject, entry), {}),
+  output: {
+    path: path.join(__dirname, "dist"),
+    library: "[name]",
+    libraryTarget: "commonjs2",
+    filename: "[name].js"
+  },
+  target: "node",
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: JSON.parse(
+          fs.readFileSync(path.join(__dirname, ".babelrc"), {encoding: "utf8"})
+        )
+      },
+      {
+        test: /\.json$/,
+        loader: 'json'
+      }
+    ]
+  }
 };
