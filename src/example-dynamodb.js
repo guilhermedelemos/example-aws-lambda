@@ -3,8 +3,7 @@ import AWS from 'aws-sdk';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-exports.handler = async (event) => {
-    // const { queryStringParameters } = event;
+export default async function exampleDynamoDB(event) {
     const rawQueryStringParameters = event.rawQueryString;
     const domainName = event.requestContext.domainName;
     const path = event.requestContext.http.path;
@@ -23,7 +22,7 @@ exports.handler = async (event) => {
     };
 
     await dynamodb.put({
-        TableName: '',
+        TableName: 'TestTable',
         Item: responseBody,
     }).promise();
 
@@ -32,4 +31,4 @@ exports.handler = async (event) => {
         body: JSON.stringify(responseBody),
     };
     return response;
-};
+}

@@ -5,6 +5,9 @@
   "author": "Guilherme de Lemos <guilherme.eti@gmail.com>",
   "license": "GPL_v3_only",
   "private": true,
+  "scripts": {
+    "build": "webpack"
+  },
   "dependencies": {
     "@babel/preset-env": "^7.10.2",
     "aws-sdk": "^2.691.0",
