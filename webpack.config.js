@@ -30,10 +30,6 @@ module.exports = {
         query: JSON.parse(
           fs.readFileSync(path.join(__dirname, ".babelrc"), {encoding: "utf8"})
         )
-      },
-      {
-        test: /\.json$/,
-        loader: 'json'
       }
     ]
   }
